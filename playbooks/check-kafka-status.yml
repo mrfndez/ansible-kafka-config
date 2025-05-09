@@ -1,0 +1,27 @@
+---
+- name: Check Kafka Status
+  hosts: kafka_brokers
+  become: yes
+  
+  tasks:
+    - name: Check Kafka service status
+      service_facts:
+
+    - name: Display Kafka service status
+      debug:
+        msg: "Kafka is {{ ansible_facts.services['kafka.service'].state }}"
+      when: "'kafka.service' in ansible_facts.services"
+
+    - name: Display Zookeeper service status
+      debug:
+        msg: "Zookeeper is {{ ansible_facts.services['zookeeper.service'].state }}"
+      when: "'zookeeper.service' in ansible_facts.services"
+      
+    - name: Check Kafka process
+      shell: ps aux | grep -v grep | grep -c kafka.Kafka || true
+      register: kafka_process
+      changed_when: false
+      
+    - name: Report Kafka process status
+      debug:
+        msg: "Kafka process count: {{ kafka_process.stdout }}"
