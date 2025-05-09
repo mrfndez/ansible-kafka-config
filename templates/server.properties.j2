@@ -1,54 +1,57 @@
-
-# The id of the broker. This must be set to a unique integer for each broker.
+############################# Broker Basics #############################
+# Unique ID for each broker
 broker.id={{ broker_id }}
-# change your.host.name by your machine's IP or hostname
-advertised.listeners=PLAINTEXT://{{ ansible_host }}:9092
 
-# Switch to enable topic deletion or not, default value is false
+# Host advertised to clients
+advertised.listeners=PLAINTEXT://{{ ansible_host }}:9092
+listeners=PLAINTEXT://{{ ansible_host }}:9092
+host.name={{ ansible_host }}
+
+# Allow topic deletion via CLI/admin tools
 delete.topic.enable=true
 
-############################# Log Basics #############################
-
-# A comma seperated list of directories under which to store log files
+############################# Log Directories #############################
+# Log file storage
 log.dirs=/data/kafka
 
-# The default number of log partitions per topic. More partitions allow greater
-# parallelism for consumption, but this will also result in more files across
-# the brokers.
+############################# Topic Defaults #############################
+# Default partitions per new topic
 num.partitions=8
-# we will have 3 brokers so the default replication factor should be 2 or 3
+
+# Default replication for new topics
 default.replication.factor=3
-# number of ISR to have in order to minimize data loss
+
+# Minimum in-sync replicas (required to acknowledge writes)
 min.insync.replicas=2
 
-############################# Log Retention Policy #############################
+# Allow automatic topic creation (usually false in prod)
+auto.create.topics.enable=true
 
-# The minimum age of a log file to be eligible for deletion due to age
-# this will delete data after a week
+# Disallow unsafe leader elections
+unclean.leader.election.enable=false
+
+############################# Log Retention #############################
+# Retain data for 7 days
 log.retention.hours=168
 
-# The maximum size of a log segment file. When this size is reached a new log segment wil>
+# Max size per log segment (1GB)
 log.segment.bytes=1073741824
 
-# The interval at which log segments are checked to see if they can be deleted according
-# to the retention policies
+# Check frequency for log deletion
 log.retention.check.interval.ms=300000
 
 ############################# Zookeeper #############################
-
-# Zookeeper connection string (see zookeeper docs for details).
-# This is a comma separated host:port pairs, each corresponding to a zk
-# server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
-# You can also append an optional chroot string to the urls to specify the
-# root directory for all kafka znodes.
+# Zookeeper connection string (with chroot)
 zookeeper.connect=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181/kafka
 
-# Timeout in ms for connecting to zookeeper
+# Timeout for ZK connection
 zookeeper.connection.timeout.ms=6000
 
+############################# I/O Performance #############################
+# Control log flushes (higher = better throughput, less durability)
+log.flush.interval.messages=10000
+log.flush.interval.ms=1000
 
-############################## Other ##################################
-# I recommend you set this to false in production.
-# We'll keep it as true for the course
-auto.create.topics.enable=true
-unclean.leader.election.enable=false
+# Max message sizes
+message.max.bytes=10485760
+replica.fetch.max.bytes=10485760
