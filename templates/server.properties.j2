@@ -10,7 +10,6 @@ host.name={{ ansible_host }}
 # Allow topic deletion via CLI/admin tools
 delete.topic.enable=true
 
-############################# Log Directories #############################
 # Log file storage
 log.dirs=/data/kafka
 
@@ -31,8 +30,8 @@ auto.create.topics.enable=true
 unclean.leader.election.enable=false
 
 ############################# Log Retention #############################
-# Retain data for 7 days
-log.retention.hours=168
+# Retain data for 2 days
+log.retention.hours=48
 
 # Max size per log segment (1GB)
 log.segment.bytes=1073741824
@@ -52,6 +51,21 @@ zookeeper.connection.timeout.ms=6000
 log.flush.interval.messages=10000
 log.flush.interval.ms=1000
 
+# Threads for Kafka I/O and replication
+num.io.threads=8
+num.network.threads=3
+num.replica.fetchers=1
+num.recovery.threads.per.data.dir=1
+
 # Max message sizes
 message.max.bytes=10485760
 replica.fetch.max.bytes=10485760
+
+############################# Consumer Offsets #############################
+# Retain consumer group offsets for 2 days
+offsets.retention.minutes=2880
+
+############################# Quota Settings #############################
+# Throttle producer and consumer throughput per client (10 MB/s)
+quota.producer.default=10485760
+quota.consumer.default=10485760
