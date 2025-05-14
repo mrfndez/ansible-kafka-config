@@ -1,6 +1,9 @@
-- name: Deploy zookeeper.properties to ZooKeeper nodes
-  hosts: zookeeper_nodes
+- name: Deploy Zookeeper Configurations
+  hosts: zookeeper
   become: true
+
+  vars_files:
+    - "../group_vars/binaries_config.yml"
 
   vars:
     data_dir: "/data/zookeeper"
@@ -11,14 +14,27 @@
     sync_limit: 5
     whitelist_commands: "ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs"
 
-    zookeeper_servers:
+    zookeepers:
       "1": "zookeeper1"
       "2": "zookeeper2"
       "3": "zookeeper3"
 
   tasks:
+    - name: Stop ZooKeeper service
+      service:
+        name: zookeeper
+        state: stopped
+        
     - name: Deploy ZooKeeper config
       template:
-        src: templates/zookeeper.properties.j2
-        dest: /opt/kafka_3.7.2/config/zookeeper.properties
+        src: ../templates/zookeeper.properties.j2
+        dest: "{{ kafka_config_dir }}/zookeeper.properties"
+        owner: "{{ kafka_user }}"
+        group: "{{ kafka_group }}"
         mode: "0644"
+        backup: yes
+        
+    - name: Start ZooKeeper service
+      service:
+        name: zookeeper
+        state: started
