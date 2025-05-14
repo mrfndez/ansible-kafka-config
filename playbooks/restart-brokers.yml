@@ -1,5 +1,5 @@
 - name: Graceful rolling restart of Kafka brokers
-  hosts: kafka_brokers
+  hosts: brokers
   become: true
   serial: 1
 
