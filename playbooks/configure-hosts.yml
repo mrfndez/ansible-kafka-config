@@ -14,4 +14,4 @@
       blockinfile:
         path: /etc/hosts
         block: "{{ kafka_hosts_block }}"
-        marker: "\n# {mark} ANSIBLE MANAGED KAFKA HOSTS"
+        marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
