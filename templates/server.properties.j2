@@ -5,8 +5,8 @@ broker.id={{ broker_id }}
 
 # Host advertised to clients
 advertised.listeners=PLAINTEXT://{{ ansible_host }}:9092
-listeners=PLAINTEXT://{{ ansible_host }}:9092
-host.name={{ ansible_host }}
+listeners=PLAINTEXT://{{ inventory_hostname }}:9092
+host.name={{ inventory_hostname }}
 
 # Allow topic deletion via CLI/admin tools
 delete.topic.enable=true
