@@ -3,16 +3,16 @@ all:
     brokers:
       hosts:
         kafka1:
-          ansible_host: kafka1
+          ansible_host: 172.31.9.1
         kafka2:
-          ansible_host: kafka2
+          ansible_host: 172.31.19.230
         kafka3:
-          ansible_host: kafka3
+          ansible_host: 172.31.35.20
     zookeepers:
       hosts:
         zookeeper1:
-          ansible_host: zookeeper1
+          ansible_host: 172.31.9.1
         zookeeper2:
-          ansible_host: zookeeper2
+          ansible_host: 172.31.19.230
         zookeeper3:
-          ansible_host: zookeeper3
+          ansible_host: 172.31.35.20
