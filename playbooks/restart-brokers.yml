@@ -1,0 +1,29 @@
+- name: Graceful rolling restart of Kafka brokers
+  hosts: kafka_brokers
+  become: true
+  serial: 1
+
+  tasks:
+    - name: Stop Kafka service
+      service:
+        name: kafka
+        state: stopped
+
+    - name: Stop ZooKeeper service
+      service:
+        name: zookeeper
+        state: stopped
+
+    - name: Reboot the host
+      reboot:
+        reboot_timeout: 600
+
+    - name: Start ZooKeeper service
+      service:
+        name: zookeeper
+        state: started
+
+    - name: Start Kafka service
+      service:
+        name: kafka
+        state: started
