@@ -5,7 +5,7 @@
   tasks:
     - name: Ensure Kafka config directory exists
       file:
-        path: "{{ kafka_config_dir }}"
+        path: "{{ kafka_dir }}/config"
         state: directory
         mode: '0755'
 
@@ -21,7 +21,7 @@
     - name: Deploy server.properties
       template:
         src: ../templates/server.properties.j2
-        dest: "{{ kafka_config_dir }}/server.properties"
+        dest: "{{ kafka_dir }}/config/server.properties"
         owner: "{{ kafka_user }}"
         group: "{{ kafka_group }}"
         mode: '0644'
