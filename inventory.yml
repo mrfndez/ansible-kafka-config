@@ -1,6 +1,6 @@
 all:
   children:
-    kafka_brokers:
+    brokers:
       hosts:
         kafka1:
           ansible_host: kafka1
