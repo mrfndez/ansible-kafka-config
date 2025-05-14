@@ -1,17 +1,24 @@
 - name: Deploy Kafka host entries to /etc/hosts
   hosts: brokers
   become: true
+  gather_facts: false
 
   tasks:
-    - name: Generate Kafka hosts block from all_hosts
+    # create a list of host/ip pairs using inventory data
+    - name: Generate host/ip pairs from inventory
       set_fact:
-        kafka_hosts_block: |
-          {% for host in all_hosts %}
-          {{ host.ip }} {{ host.hostname }}
-          {% endfor %}
+        all_hosts_block: >-
+          {{
+            groups['all']
+            | map('extract', hostvars, ['ansible_host'])
+            | zip(groups['all'])
+            | map('reverse')
+            | map('join', ' ')
+            | join('\n')
+          }}
 
     - name: Inject Kafka host entries into /etc/hosts
       blockinfile:
         path: /etc/hosts
-        block: "{{ kafka_hosts_block }}"
+        block: "{{ all_hosts_block }}"
         marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
