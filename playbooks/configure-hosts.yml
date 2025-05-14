@@ -4,7 +4,6 @@
   gather_facts: false
 
   tasks:
-    # create a list of host/ip pairs using inventory data
     - name: Generate host/ip pairs from inventory
       set_fact:
         all_hosts_block: |
