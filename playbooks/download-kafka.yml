@@ -29,3 +29,7 @@
       args:
         creates: "{{ final_kafka_dir }}"
 
+    - name: Remove Kafka archive after extraction
+      file:
+        path: "{{ download_dest }}"
+        state: absent
