@@ -9,6 +9,7 @@
     download_dest: "/tmp/{{ kafka_archive }}"
     extract_dest: "/opt/"
     final_kafka_dir: "/opt/kafka_{{ kafka_version }}"
+  
   tasks:
     - name: Download Kafka {{ kafka_version }} from Apache
       get_url:
