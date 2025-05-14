@@ -1,5 +1,5 @@
 - name: Deploy Kafka host entries to /etc/hosts
-  hosts: kafka_brokers
+  hosts: brokers
   become: true
 
   tasks:
