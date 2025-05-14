@@ -1,10 +1,25 @@
-# ZooKeeper Configuration
+############################# ZooKeeper Configuration #############################
 
+# Time in ms between heartbeats
 tickTime=2000
-dataDir=/var/lib/zookeeper
+
+# Directory to store snapshots and myid file
+dataDir={{ zk_data_dir }}
+
+# Port for clients to connect
 clientPort=2181
+
+# Number of ticks for initial connection
 initLimit=5
+
+# Number of ticks to sync with followers
 syncLimit=2
+
+
+############################# ZooKeeper Ensemble Members #############################
+
+# Format: server.<id>=<hostname>:<peerPort>:<electionPort>
+# Example: server.1=192.168.1.1:2888:3888
 
 {% for host in groups['zookeepers'] %}
 server.{{ groups['zookeepers'].index(host) + 1 }}={{ hostvars[host]['ansible_host'] }}:2888:3888
