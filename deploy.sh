@@ -3,7 +3,8 @@
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <playbook-file.yml> [extra ansible args]"
-  # ./deploy.sh broker-configs.yml --limit kafka_brokers
+  # ./deploy.sh broker-configs.yml --limit brokers
+  # ./deploy.sh broker-configs.yml --limit zookeepers
   exit 1
 fi
 
