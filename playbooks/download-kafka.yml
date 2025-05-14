@@ -1,5 +1,5 @@
 - name: Download and Install Kafka 3.7.2 on Brokers
-  hosts: kafka_brokers
+  hosts: brokers
   become: yes
 
   vars_files:
