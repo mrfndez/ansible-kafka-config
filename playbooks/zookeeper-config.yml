@@ -1,0 +1,24 @@
+- name: Deploy zookeeper.properties to ZooKeeper nodes
+  hosts: zookeeper_nodes
+  become: true
+
+  vars:
+    data_dir: "/data/zookeeper"
+    client_port: 2181
+    max_client_cnxns: 0
+    tick_time: 2000
+    init_limit: 10
+    sync_limit: 5
+    whitelist_commands: "ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs"
+
+    zookeeper_servers:
+      "1": "zookeeper1"
+      "2": "zookeeper2"
+      "3": "zookeeper3"
+
+  tasks:
+    - name: Deploy ZooKeeper config
+      template:
+        src: templates/zookeeper.properties.j2
+        dest: /opt/kafka_3.7.2/config/zookeeper.properties
+        mode: "0644"
