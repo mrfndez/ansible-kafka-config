@@ -31,10 +31,8 @@
         group: "{{ kafka_group }}"
         mode: '0644'
         backup: yes
-      notify: start kafka
 
-  handlers:
-    - name: start kafka
+    - name: Start Kafka service
       service:
         name: kafka
         state: started
