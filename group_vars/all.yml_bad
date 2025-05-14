@@ -1,8 +1,0 @@
-all_hosts:
-  - { ip: "172.31.9.1", hostname: "kafka1" }
-  - { ip: "172.31.19.230", hostname: "kafka2" }
-  - { ip: "172.31.35.20", hostname: "kafka3" }
-  - { ip: "172.31.9.1", hostname: "zookeeper1" }
-  - { ip: "172.31.19.230", hostname: "zookeeper2" }
-  - { ip: "172.31.35.20", hostname: "zookeeper3" }
-  - { ip: "172.31.88.119", hostname: "webtools" }
