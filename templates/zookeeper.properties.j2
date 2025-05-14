@@ -10,10 +10,14 @@ dataDir={{ zk_data_dir }}
 clientPort=2181
 
 # Number of ticks for initial connection
-initLimit=5
+initLimit=10
 
 # Number of ticks to sync with followers
-syncLimit=2
+syncLimit=5
+
+# Disable the per-IP limit on number of connections
+# (0 = unlimited, fine for non-production use)
+maxClientCnxns=0
 
 
 ############################# ZooKeeper Ensemble Members #############################
@@ -24,3 +28,9 @@ syncLimit=2
 {% for host in groups['zookeepers'] %}
 server.{{ groups['zookeepers'].index(host) + 1 }}={{ hostvars[host]['ansible_host'] }}:2888:3888
 {% endfor %}
+
+
+############################# 4 Letter Word Commands #############################
+
+# Enables specific commands used for health checks and diagnostics
+4lw.commands.whitelist=ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs
