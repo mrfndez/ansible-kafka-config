@@ -1,4 +1,4 @@
-- name: Deploy Broker Specific Configurations
+- name: Deploy Kafka Broker Configurations
   hosts: brokers
   become: yes
 
