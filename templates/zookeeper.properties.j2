@@ -26,7 +26,7 @@ maxClientCnxns=0
 # Example: server.1=192.168.1.1:2888:3888
 
 {% for host in groups['zookeepers'] %}
-server.{{ groups['zookeepers'].index(host) + 1 }}={{ hostvars[host]['ansible_host'] }}:2888:3888
+server.{{ loop.index }}={{ hostvars[host]['ansible_host'] }}:2888:3888
 {% endfor %}
 
 
