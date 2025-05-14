@@ -1,6 +1,6 @@
 ---
 - name: Check Kafka Status
-  hosts: kafka_brokers
+  hosts: brokers
   become: yes
   
   tasks:
