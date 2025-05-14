@@ -13,5 +13,5 @@
     - name: Inject Kafka host entries into /etc/hosts
       blockinfile:
         path: /etc/hosts
-        block: "{{ kafka_hosts_block }}"
+        block: "\n{{ kafka_hosts_block }}"
         marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
