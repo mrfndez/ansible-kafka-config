@@ -1,7 +1,0 @@
-kafka_hosts_entries:
-  - ip: "10.0.1.101"
-    hostname: "kafka1"
-  - ip: "10.0.1.102"
-    hostname: "kafka2"
-  - ip: "10.0.1.103"
-    hostname: "kafka3"
