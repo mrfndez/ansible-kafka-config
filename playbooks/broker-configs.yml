@@ -1,5 +1,5 @@
 - name: Deploy Broker Specific Configurations
-  hosts: kafka_brokers
+  hosts: brokers
   become: yes
 
   vars_files:
@@ -14,7 +14,7 @@
 
     - name: Set broker ID based on inventory
       set_fact:
-        broker_id: "{{ groups['kafka_brokers'].index(inventory_hostname) + 1 }}"
+        broker_id: "{{ groups['brokers'].index(inventory_hostname) + 1 }}"
 
     - name: Stop Kafka service
       service:
