@@ -1,0 +1,17 @@
+- name: Deploy Kafka host entries to /etc/hosts
+  hosts: kafka_brokers
+  become: true
+  
+  vars_files:
+    - "../group_vars/kafka_brokers.yml"
+  
+  tasks:
+    - name: Generate Kafka hosts block
+      set_fact:
+        kafka_hosts_block: "{{ kafka_hosts_entries | map(attribute='ip') | zip(kafka_hosts_entries | map(attribute='hostname')) | map('join', ' ') | join('\n') }}"
+
+    - name: Inject Kafka host entries into /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        block: "{{ kafka_hosts_block }}"
+        marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
