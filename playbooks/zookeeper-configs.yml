@@ -1,39 +1,35 @@
-- name: Deploy Zookeeper Configurations
-  hosts: zookeeper
-  become: true
-
-  vars_files:
-    - "../group_vars/binaries_config.yml"
-
-  vars:
-    data_dir: "/data/zookeeper"
-    client_port: 2181
-    max_client_cnxns: 0
-    tick_time: 2000
-    init_limit: 10
-    sync_limit: 5
-    whitelist_commands: "ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs"
-
-    zookeepers:
-      "1": "zookeeper1"
-      "2": "zookeeper2"
-      "3": "zookeeper3"
+- name: Deploy ZooKeeper Configuration
+  hosts: zookeepers
+  become: yes
 
   tasks:
-    - name: Stop ZooKeeper service
-      service:
-        name: zookeeper
-        state: stopped
-        
-    - name: Deploy ZooKeeper config
+    - name: Ensure ZooKeeper config directory exists
+      file:
+        path: "{{ kafka_config_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Set ZooKeeper ID (myid) based on inventory
+      set_fact:
+        zk_id: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
+
+    - name: Write ZooKeeper myid
+      copy:
+        content: "{{ zk_id }}"
+        dest: /var/lib/zookeeper/myid
+        owner: "{{ kafka_user }}"
+        group: "{{ kafka_group }}"
+        mode: '0644'
+
+    - name: Deploy zoo.cfg
       template:
         src: ../templates/zookeeper.properties.j2
         dest: "{{ kafka_config_dir }}/zookeeper.properties"
         owner: "{{ kafka_user }}"
         group: "{{ kafka_group }}"
-        mode: "0644"
+        mode: '0644'
         backup: yes
-        
+
     - name: Start ZooKeeper service
       service:
         name: zookeeper
