@@ -1,14 +1,16 @@
 # ZooKeeper Configuration
 
-dataDir={{ data_dir | default('/data/zookeeper') }}
-clientPort={{ client_port | default(2181) }}
-maxClientCnxns={{ max_client_cnxns | default(0) }}
-tickTime={{ tick_time | default(2000) }}
-initLimit={{ init_limit | default(10) }}
-syncLimit={{ sync_limit | default(5) }}
+dataDir={{ zookeeper_data_dir }}
+clientPort={{ zookeeper_client_port }}
+maxClientCnxns={{ zookeeper_max_client_connections }}
+tickTime={{ zookeeper_tick_time }}
+initLimit={{ zookeeper_init_limit }}
+syncLimit={{ zookeeper_sync_limit }}
 
-{% for idx, zk_host in zookeeper_servers.items() %}
-server.{{ idx }}={{ zk_host }}:2888:3888
+# ZooKeeper cluster servers
+{% for server in zookeeper_servers %}
+server.{{ loop.index }}={{ server.hostname }}:{{ server.leader_port }}:{{ server.election_port }}
 {% endfor %}
 
-4lw.commands.whitelist={{ whitelist_commands | default('ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs') }}
+# Whitelisted 4lw commands
+4lw.commands.whitelist={{ zookeeper_whitelist_commands }}
