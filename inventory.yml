@@ -16,3 +16,7 @@ all:
           ansible_host: 172.31.19.230
         zookeeper3:
           ansible_host: 172.31.35.20
+    tools:
+      hosts:
+        webtools:
+          ansible_host: 172.31.88.119
