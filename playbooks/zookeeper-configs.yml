@@ -13,15 +13,15 @@
       set_fact:
         zk_id: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
 
-    - name: Write ZooKeeper myid
-      copy:
-        content: "{{ zk_id }}"
-        dest: /var/lib/zookeeper/myid
-        owner: "{{ kafka_user }}"
-        group: "{{ kafka_group }}"
-        mode: '0644'
+    # - name: Write ZooKeeper myid
+    #   copy:
+    #     content: "{{ zk_id }}"
+    #     dest: /var/lib/zookeeper/myid
+    #     owner: "{{ kafka_user }}"
+    #     group: "{{ kafka_group }}"
+    #     mode: '0644'
 
-    - name: Deploy zoo.cfg
+    - name: Deploy ZooKeeper
       template:
         src: ../templates/zookeeper.properties.j2
         dest: "{{ kafka_config_dir }}/zookeeper.properties"
