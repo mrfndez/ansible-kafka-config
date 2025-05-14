@@ -1,16 +1,11 @@
 # ZooKeeper Configuration
 
-dataDir={{ zookeeper_data_dir }}
-clientPort={{ zookeeper_client_port }}
-maxClientCnxns={{ zookeeper_max_client_connections }}
-tickTime={{ zookeeper_tick_time }}
-initLimit={{ zookeeper_init_limit }}
-syncLimit={{ zookeeper_sync_limit }}
+tickTime=2000
+dataDir=/var/lib/zookeeper
+clientPort=2181
+initLimit=5
+syncLimit=2
 
-# ZooKeeper cluster servers
-{% for server in zookeeper_servers %}
-server.{{ loop.index }}={{ server.hostname }}:{{ server.leader_port }}:{{ server.election_port }}
+{% for host in groups['zookeepers'] %}
+server.{{ groups['zookeepers'].index(host) + 1 }}={{ hostvars[host]['ansible_host'] }}:2888:3888
 {% endfor %}
-
-# Whitelisted 4lw commands
-4lw.commands.whitelist={{ zookeeper_whitelist_commands }}
