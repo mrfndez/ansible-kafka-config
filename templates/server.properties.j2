@@ -48,7 +48,6 @@ log.retention.check.interval.ms=300000
 ############################# Zookeeper #############################
 
 # Zookeeper connection string (with chroot)
-{# zookeeper.connect=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181/kafka #}
 zookeeper.connect={% for host in groups['zookeepers'] %}{{ host }}:2181{% if not loop.last %},{% endif %}{% endfor %}/kafka
 
 # Timeout for ZK connection
