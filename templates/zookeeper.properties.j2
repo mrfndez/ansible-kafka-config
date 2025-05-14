@@ -25,7 +25,8 @@ maxClientCnxns=0
 # Format: server.<id>=<hostname>:<peerPort>:<electionPort>
 # Example: server.1=192.168.1.1:2888:3888
 
-{% for host in groups['zookeepers'] %}
+{% set unique_zk_hosts = groups['zookeepers'] | sort %}
+{% for host in unique_zk_hosts %}
 server.{{ loop.index }}={{ hostvars[host]['ansible_host'] }}:2888:3888
 {% endfor %}
 
