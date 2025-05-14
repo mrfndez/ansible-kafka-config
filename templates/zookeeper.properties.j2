@@ -1,0 +1,14 @@
+# ZooKeeper Configuration
+
+dataDir={{ data_dir | default('/data/zookeeper') }}
+clientPort={{ client_port | default(2181) }}
+maxClientCnxns={{ max_client_cnxns | default(0) }}
+tickTime={{ tick_time | default(2000) }}
+initLimit={{ init_limit | default(10) }}
+syncLimit={{ sync_limit | default(5) }}
+
+{% for idx, zk_host in zookeeper_servers.items() %}
+server.{{ idx }}={{ zk_host }}:2888:3888
+{% endfor %}
+
+4lw.commands.whitelist={{ whitelist_commands | default('ruok,stat,conf,mntr,cons,dump,srvr,envi,wchs') }}
