@@ -2,11 +2,8 @@
   hosts: kafka_brokers
   become: yes
 
-  vars:
-    kafka_version: "3.7.2"
-    kafka_config_dir: "/opt/kafka_{{ kafka_version }}/config"
-    kafka_user: ubuntu
-    kafka_group: ubuntu
+  vars_files:
+    - "../group_vars/binaries_config.yml"
 
   tasks:
     - name: Ensure Kafka config directory exists
