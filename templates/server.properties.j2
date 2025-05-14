@@ -1,4 +1,5 @@
 ############################# Broker Basics #############################
+
 # Unique ID for each broker
 broker.id={{ broker_id }}
 
@@ -13,7 +14,9 @@ delete.topic.enable=true
 # Log file storage
 log.dirs=/data/kafka
 
+
 ############################# Topic Defaults #############################
+
 # Default partitions per new topic
 num.partitions=8
 
@@ -29,7 +32,9 @@ auto.create.topics.enable=true
 # Disallow unsafe leader elections
 unclean.leader.election.enable=false
 
+
 ############################# Log Retention #############################
+
 # Retain data for 2 days
 log.retention.hours=48
 
@@ -39,14 +44,18 @@ log.segment.bytes=1073741824
 # Check frequency for log deletion
 log.retention.check.interval.ms=300000
 
+
 ############################# Zookeeper #############################
+
 # Zookeeper connection string (with chroot)
 zookeeper.connect=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181/kafka
 
 # Timeout for ZK connection
 zookeeper.connection.timeout.ms=6000
 
+
 ############################# I/O Performance #############################
+
 # Control log flushes (higher = better throughput, less durability)
 log.flush.interval.messages=10000
 log.flush.interval.ms=1000
@@ -61,11 +70,15 @@ num.recovery.threads.per.data.dir=1
 message.max.bytes=10485760
 replica.fetch.max.bytes=10485760
 
+
 ############################# Consumer Offsets #############################
+
 # Retain consumer group offsets for 2 days
 offsets.retention.minutes=2880
 
+
 ############################# Quota Settings #############################
+
 # Throttle producer and consumer throughput per client (10 MB/s)
 quota.producer.default=10485760
 quota.consumer.default=10485760
