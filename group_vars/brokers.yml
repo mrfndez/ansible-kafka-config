@@ -1,4 +1,4 @@
-cluster_hosts_entries:
+brokers_entries:
   - ip: "172.31.9.1"
     hostname: "kafka1"
   - ip: "172.31.9.1"
