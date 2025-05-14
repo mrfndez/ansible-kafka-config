@@ -1,6 +1,7 @@
 - name: Download and Install Kafka 3.7.2 on Brokers
   hosts: kafka_brokers
   become: yes
+  
   vars:
     kafka_version: "3.7.2"
     scala_version: "2.13"
