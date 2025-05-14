@@ -1,0 +1,9 @@
+# binaries configs
+kafka_version: "3.7.2"
+scala_version: "2.13"
+kafka_archive: "kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
+kafka_url: "https://downloads.apache.org/kafka/{{ kafka_version }}/{{ kafka_archive }}"
+kafka_dir: "/opt/kafka_{{ kafka_version }}"
+kafka_config_dir: "/opt/kafka_{{ kafka_version }}/config"
+kafka_user: ubuntu
+kafka_group: ubuntu
