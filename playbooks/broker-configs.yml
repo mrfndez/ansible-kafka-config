@@ -2,9 +2,6 @@
   hosts: brokers
   become: yes
 
-  vars_files:
-    - "../group_vars/binaries_config.yml"
-
   tasks:
     - name: Ensure Kafka config directory exists
       file:
