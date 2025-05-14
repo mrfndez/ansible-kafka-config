@@ -21,7 +21,7 @@
     #     group: "{{ kafka_group }}"
     #     mode: '0644'
 
-    - name: Deploy ZooKeeper
+    - name: Deploy zookeeper.properties
       template:
         src: ../templates/zookeeper.properties.j2
         dest: "{{ kafka_config_dir }}/zookeeper.properties"
