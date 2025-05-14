@@ -5,7 +5,7 @@
   tasks:
     - name: Ensure ZooKeeper config directory exists
       file:
-        path: "{{ kafka_config_dir }}"
+        path: "{{ kafka_dir }}/config"
         state: directory
         mode: '0755'
 
@@ -16,7 +16,7 @@
     # - name: Write ZooKeeper myid
     #   copy:
     #     content: "{{ zk_id }}"
-    #     dest: /var/lib/zookeeper/myid
+    #     dest: "{{ zk_data_dir }}"
     #     owner: "{{ kafka_user }}"
     #     group: "{{ kafka_group }}"
     #     mode: '0644'
@@ -24,7 +24,7 @@
     - name: Deploy zookeeper.properties
       template:
         src: ../templates/zookeeper.properties.j2
-        dest: "{{ kafka_config_dir }}/zookeeper.properties"
+        dest: "{{ kafka_dir }}/config/zookeeper.properties"
         owner: "{{ kafka_user }}"
         group: "{{ kafka_group }}"
         mode: '0644'
