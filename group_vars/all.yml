@@ -7,3 +7,6 @@ kafka_dir: "/opt/kafka_{{ kafka_version }}"
 kafka_config_dir: "/opt/kafka_{{ kafka_version }}/config"
 kafka_user: ubuntu
 kafka_group: ubuntu
+
+# zookeeper specific
+zk_data_dir: /data/zookeeper
