@@ -8,7 +8,7 @@
   tasks:
     - name: Generate Kafka hosts block
       set_fact:
-        kafka_hosts_block: "{{ kafka_hosts_entries | map(attribute='ip') | zip(kafka_hosts_entries | map(attribute='hostname')) | map('join', ' ') | join('\n') }}"
+        kafka_hosts_block: "{{ cluster_hosts_entries | map(attribute='ip') | zip(cluster_hosts_entries | map(attribute='hostname')) | map('join', ' ') | join('\n') }}"
 
     - name: Inject Kafka host entries into /etc/hosts
       blockinfile:
