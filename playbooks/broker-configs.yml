@@ -18,7 +18,7 @@
         name: kafka
         state: stopped
 
-    - name: Deploy broker-specific server.properties
+    - name: Deploy server.properties
       template:
         src: ../templates/server.properties.j2
         dest: "{{ kafka_config_dir }}/server.properties"
