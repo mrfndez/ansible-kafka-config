@@ -7,15 +7,10 @@
     # create a list of host/ip pairs using inventory data
     - name: Generate host/ip pairs from inventory
       set_fact:
-        all_hosts_block: >-
-          {{
-            groups['all']
-            | map('extract', hostvars, ['ansible_host'])
-            | zip(groups['all'])
-            | map('reverse')
-            | map('join', ' ')
-            | join('\n')
-          }}
+        all_hosts_block: |
+          {% for host in groups['all'] %}
+          {{ hostvars[host].ansible_host }} {{ host }}
+          {% endfor %}
 
     - name: Inject Kafka host entries into /etc/hosts
       blockinfile:
