@@ -3,7 +3,7 @@
   become: true
   
   vars_files:
-    - "../group_vars/kafka_brokers.yml"
+    - "../group_vars/cluster_hosts.yml"
   
   tasks:
     - name: Generate Kafka hosts block
