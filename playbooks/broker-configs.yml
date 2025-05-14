@@ -3,7 +3,7 @@
   become: yes
 
   vars:
-    kafka_config_dir: kafka_3.7.2/config
+    kafka_config_dir: /opt/kafka_3.7.2/config
     kafka_user: ubuntu
     kafka_group: ubuntu
 
