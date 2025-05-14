@@ -23,11 +23,18 @@ maxClientCnxns=0
 ############################# ZooKeeper Ensemble Members #############################
 
 # Format: server.<id>=<hostname>:<peerPort>:<electionPort>
-# Example: server.1=192.168.1.1:2888:3888
+{% set seen_ips = [] %}
+{% set zk_hosts = [] %}
+{% for host in groups['zookeepers'] %}
+  {% set ip = hostvars[host]['ansible_host'] %}
+  {% if ip not in seen_ips %}
+    {% set _ = seen_ips.append(ip) %}
+    {% set _ = zk_hosts.append({'ip': ip, 'name': host}) %}
+  {% endif %}
+{% endfor %}
 
-{% set unique_zk_hosts = groups['zookeepers'] | sort %}
-{% for host in unique_zk_hosts %}
-server.{{ loop.index }}={{ hostvars[host]['ansible_host'] }}:2888:3888
+{% for item in zk_hosts %}
+server.{{ loop.index }}={{ item.ip }}:2888:3888
 {% endfor %}
 
 
