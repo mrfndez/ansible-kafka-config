@@ -4,10 +4,10 @@ all:
       hosts:
         kafka1:
           ansible_host: kafka1
-        #kafka2:
-          #ansible_host: kafka2
-        #kafka3:
-          #ansible_host: kafka3
+        kafka2:
+          ansible_host: kafka2
+        kafka3:
+          ansible_host: kafka3
     zookeepers:
       hosts:
         zookeeper1:
