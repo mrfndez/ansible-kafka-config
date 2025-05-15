@@ -3,12 +3,12 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: kafka
-    group: kafka
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
     mode: '0755'
   with_items:
-    - "{{ zookeeper_data_dir }}"
-    - "{{ zookeeper_log_dir }}"
+    - "{{ zk_data_dir }}"
+    - "{{ zk_log_dir }}"
 
 - name: Create systemd service for Zookeeper
   copy:
@@ -21,8 +21,8 @@
       [Service]
       Type=simple
       User=kafka
-      ExecStart=/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties
-      ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
+      ExecStart={{ zk_data_dir }}/bin/zookeeper-server-start.sh {{ zk_data_dir }}/config/zookeeper.properties
+      ExecStop={{ zk_data_dir }}/bin/zookeeper-server-stop.sh
       Restart=on-failure
       RestartSec=5
 
