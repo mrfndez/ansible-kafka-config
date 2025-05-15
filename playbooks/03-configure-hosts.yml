@@ -1,4 +1,3 @@
----
 - name: Deploy Kafka host entries to /etc/hosts
   hosts: brokers
   become: true
