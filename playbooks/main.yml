@@ -8,7 +8,7 @@
       import_playbook: 01-install-deps.yml
 
     - name: Download Kafka binaries
-      import_playbook: 02-download-kafka.yml
+      import_playbook: 02-download-binaries.yml
 
     - name: Configure /etc/hosts
       import_playbook: 03-configure-hosts.yml
