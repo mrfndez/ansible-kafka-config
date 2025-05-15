@@ -9,3 +9,8 @@
     - import_tasks: 04-zookeeper-configs.yml
     - import_tasks: 05-zookeeper-systemd.yml
     - import_tasks: 06-check-zookeeper-health.yml
+
+  handlers:
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
