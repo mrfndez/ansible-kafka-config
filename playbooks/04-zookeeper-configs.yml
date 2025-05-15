@@ -1,6 +1,4 @@
 - name: Deploy ZooKeeper Configuration
-  hosts: zookeepers
-  become: yes
 
   tasks:
     - name: Ensure ZooKeeper config directory exists
