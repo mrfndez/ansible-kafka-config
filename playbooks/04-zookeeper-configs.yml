@@ -1,3 +1,4 @@
+---
 - name: Deploy ZooKeeper Configuration
   hosts: zookeepers
   become: yes
