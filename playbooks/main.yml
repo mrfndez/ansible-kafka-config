@@ -1,6 +1,6 @@
 ---
 - name: Complete Zookeeper Deployment (on Kafka broker hosts)
-  # hosts: brokers
+  hosts: brokers
   become: true
   tasks:
     # - import_tasks: 01-install-deps.yml
