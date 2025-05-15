@@ -5,7 +5,7 @@
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
     mode: '0755'
-  with_items:
+  loop:
     - "{{ zk_data_dir }}"
     - "{{ zk_log_dir }}"
 
@@ -19,24 +19,18 @@
 
       [Service]
       Type=simple
-      User=kafka
-      ExecStart={{ zk_data_dir }}/bin/zookeeper-server-start.sh {{ zk_data_dir }}/config/zookeeper.properties
-      ExecStop={{ zk_data_dir }}/bin/zookeeper-server-stop.sh
+      User={{ kafka_user }}
+      ExecStart={{ kafka_dir }}/bin/zookeeper-server-start.sh {{ kafka_dir }}/config/zookeeper.properties
+      ExecStop={{ kafka_dir }}/bin/zookeeper-server-stop.sh
       Restart=on-failure
       RestartSec=5
 
       [Install]
       WantedBy=multi-user.target
-  notify:
-    - Reload systemd
+  notify: Reload systemd
 
 - name: Enable and start Zookeeper
   systemd:
     name: zookeeper
     enabled: yes
     state: started
-
-handlers:
-  - name: Reload systemd
-    systemd:
-      daemon_reload: yes
