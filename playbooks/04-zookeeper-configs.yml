@@ -10,9 +10,16 @@
     state: directory
     mode: '0755'
 
-- name: Set ZooKeeper ID (myid) based on inventory
+- name: Set ZooKeeper ID (myid) by matching IP to zookeeper group
   set_fact:
-    zk_id: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
+    zk_id: >-
+      {{
+        (groups['zookeepers']
+          | map('extract', hostvars, ['ansible_host'])
+          | list)
+          .index(ansible_host) + 1
+      }}
+  when: ansible_host in (groups['zookeepers'] | map('extract', hostvars, ['ansible_host']) | list)
 
 - name: Write ZooKeeper myid
   copy:
