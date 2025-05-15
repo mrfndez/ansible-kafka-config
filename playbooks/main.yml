@@ -5,19 +5,19 @@
 
   tasks:
     - name: Install system dependencies, Java 8, and set swap
-      import_tasks: install-deps.yml
+      import_playbook: 01-install-deps.yml
 
     - name: Download Kafka binaries
-      import_playbook: download-kafka.yml
+      import_playbook: 02-download-kafka.yml
 
     - name: Configure /etc/hosts
-      import_playbook: configure-hosts.yml
+      import_playbook: 03-configure-hosts.yml
 
     - name: Deploy Zookeeper config
-      import_playbook: zookeeper-configs.yml
+      import_playbook: 04-zookeeper-configs.yml
 
     - name: Set up and enable Zookeeper systemd service
-      import_playbook: zookeeper-systemd.yml
+      import_playbook: 05-zookeeper-systemd.yml
 
     - name: Check Zookeeper health
-      import_playbook: check-zookeeper-health.yml
+      import_playbook: 06-check-zookeeper-health.yml
