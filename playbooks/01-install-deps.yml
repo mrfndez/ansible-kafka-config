@@ -13,7 +13,7 @@
       - vim
       - nano
       - tar
-      - netcat
+      - netcat-openbsd
       - openjdk-21-jdk
     state: present
   when: ansible_os_family == "Debian"
