@@ -11,7 +11,7 @@
       - netcat
       - openjdk-8-jdk
     state: present
-  when: ansible_os_family == "Ubuntu"
+  when: ansible_os_family == "Debian"
 
 - name: Disable swap (set vm.swappiness=1)
   sysctl:
