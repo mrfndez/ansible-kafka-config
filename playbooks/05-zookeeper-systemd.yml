@@ -1,0 +1,43 @@
+---
+- name: Create Zookeeper data and log directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: kafka
+    group: kafka
+    mode: '0755'
+  with_items:
+    - "{{ zookeeper_data_dir }}"
+    - "{{ zookeeper_log_dir }}"
+
+- name: Create systemd service for Zookeeper
+  copy:
+    dest: /etc/systemd/system/zookeeper.service
+    content: |
+      [Unit]
+      Description=Apache Zookeeper server
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=kafka
+      ExecStart=/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties
+      ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
+      Restart=on-failure
+      RestartSec=5
+
+      [Install]
+      WantedBy=multi-user.target
+  notify:
+    - Reload systemd
+
+- name: Enable and start Zookeeper
+  systemd:
+    name: zookeeper
+    enabled: yes
+    state: started
+
+handlers:
+  - name: Reload systemd
+    systemd:
+      daemon_reload: yes
