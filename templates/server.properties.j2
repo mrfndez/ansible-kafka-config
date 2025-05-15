@@ -11,8 +11,8 @@ host.name={{ inventory_hostname }}
 # Allow topic deletion via CLI/admin tools
 delete.topic.enable=true
 
-# Log file storage
-log.dirs=/data/kafka
+# Log (topic data) storage
+log.dirs={{ broker_data_dir }}
 
 
 ############################# Topic Defaults #############################
