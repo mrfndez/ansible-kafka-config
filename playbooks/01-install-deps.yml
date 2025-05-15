@@ -9,7 +9,7 @@
       - nano
       - tar
       - netcat
-      - openjdk-8-jdk
+      - openjdk-21-jdk
     state: present
   when: ansible_os_family == "Debian"
 
