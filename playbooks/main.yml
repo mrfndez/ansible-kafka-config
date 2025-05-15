@@ -2,22 +2,10 @@
 - name: Complete Zookeeper Deployment (on Kafka broker hosts)
   hosts: brokers
   become: true
-
   tasks:
-    - name: Install system dependencies, Java 8, and set swap
-      import_playbook: 01-install-deps.yml
-
-    - name: Download Kafka binaries
-      import_playbook: 02-download-binaries.yml
-
-    - name: Configure /etc/hosts
-      import_playbook: 03-configure-hosts.yml
-
-    - name: Deploy Zookeeper config
-      import_playbook: 04-zookeeper-configs.yml
-
-    - name: Set up and enable Zookeeper systemd service
-      import_playbook: 05-zookeeper-systemd.yml
-
-    - name: Check Zookeeper health
-      import_playbook: 06-check-zookeeper-health.yml
+    - import_tasks: 01-install-deps.yml
+    - import_tasks: 02-download-kafka.yml
+    - import_tasks: 03-configure-hosts.yml
+    - import_tasks: 04-zookeeper-configs.yml
+    - import_tasks: 05-zookeeper-systemd.yml
+    - import_tasks: 06-check-zookeeper-health.yml
