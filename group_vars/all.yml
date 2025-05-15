@@ -1,11 +1,18 @@
-# binaries configs
+######## Binaries Configs ########
 kafka_version: "3.7.2"
 scala_version: "2.13"
 kafka_archive: "kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
 kafka_url: "https://downloads.apache.org/kafka/{{ kafka_version }}/{{ kafka_archive }}"
-kafka_dir: "/opt/kafka_{{ kafka_version }}"
+kafka_dir: "/opt/kafka"
 kafka_user: ubuntu
 kafka_group: ubuntu
 
-# zookeeper specific
-zk_data_dir: /data/zookeeper
+
+######## Broker Specific ########
+# log (topic data) storage
+broker_data_dir: "/data/kafka"
+
+
+########  Specific ########
+zk_data_dir: "/data/zookeeper"
+zk_log_dir: "/var/zookeeper/log"
