@@ -1,34 +1,32 @@
-- name: Deploy ZooKeeper Configuration
+- name: Ensure ZooKeeper config directory exists
+  file:
+    path: "{{ kafka_dir }}/config"
+    state: directory
+    mode: '0755'
 
-  tasks:
-    - name: Ensure ZooKeeper config directory exists
-      file:
-        path: "{{ kafka_dir }}/config"
-        state: directory
-        mode: '0755'
+- name: Ensure ZooKeeper data directory exists
+  file:
+    path: "{{ zk_data_dir }}"
+    state: directory
+    mode: '0755'
 
-    - name: Set ZooKeeper ID (myid) based on inventory
-      set_fact:
-        zk_id: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
+- name: Set ZooKeeper ID (myid) based on inventory
+  set_fact:
+    zk_id: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
 
-    # - name: Write ZooKeeper myid
-    #   copy:
-    #     content: "{{ zk_id }}"
-    #     dest: "{{ zk_data_dir }}"
-    #     owner: "{{ kafka_user }}"
-    #     group: "{{ kafka_group }}"
-    #     mode: '0644'
+- name: Write ZooKeeper myid
+  copy:
+    content: "{{ zk_id }}"
+    dest: "{{ zk_data_dir }}/myid"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0644'
 
-    - name: Deploy zookeeper.properties
-      template:
-        src: ../templates/zookeeper.properties.j2
-        dest: "{{ kafka_dir }}/config/zookeeper.properties"
-        owner: "{{ kafka_user }}"
-        group: "{{ kafka_group }}"
-        mode: '0644'
-        backup: yes
-
-    - name: Start ZooKeeper service
-      service:
-        name: zookeeper
-        state: started
+- name: Deploy zookeeper.properties
+  template:
+    src: ../templates/zookeeper.properties.j2
+    dest: "{{ kafka_dir }}/config/zookeeper.properties"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0644'
+    backup: yes
