@@ -1,16 +1,12 @@
-- name: Deploy Kafka host entries to /etc/hosts
-  gather_facts: false
+- name: Generate host/ip pairs from inventory to /etc/hosts
+  set_fact:
+    all_hosts_block: |
+      {% for host in groups['all'] %}
+      {{ hostvars[host].ansible_host }} {{ host }}
+      {% endfor %}
 
-  tasks:
-    - name: Generate host/ip pairs from inventory
-      set_fact:
-        all_hosts_block: |
-          {% for host in groups['all'] %}
-          {{ hostvars[host].ansible_host }} {{ host }}
-          {% endfor %}
-
-    - name: Inject Kafka host entries into /etc/hosts
-      blockinfile:
-        path: /etc/hosts
-        block: "{{ all_hosts_block }}"
-        marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
+- name: Inject Kafka host entries into /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: "{{ all_hosts_block }}"
+    marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
