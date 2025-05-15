@@ -1,6 +1,6 @@
 ---
 - name: Complete Zookeeper Deployment (on Kafka broker hosts)
-  hosts: zookeeper
+  hosts: brokers
   become: true
 
   tasks:
