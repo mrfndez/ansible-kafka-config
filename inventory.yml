@@ -8,6 +8,8 @@ all:
           ansible_host: 172.31.19.230
         kafka3:
           ansible_host: 172.31.35.20
+        kafka4:
+          ansible_host: 172.31.48.10
     zookeepers:
       hosts:
         zookeeper1:
@@ -16,6 +18,8 @@ all:
           ansible_host: 172.31.19.230
         zookeeper3:
           ansible_host: 172.31.35.20
+        zookeeper4:
+          ansible_host: 172.31.48.10
     tools:
       hosts:
         webtools:
