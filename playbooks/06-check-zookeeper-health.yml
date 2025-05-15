@@ -1,4 +1,3 @@
----
 - name: Wait for Zookeeper to be up
   wait_for:
     port: {{ zk_port }}
