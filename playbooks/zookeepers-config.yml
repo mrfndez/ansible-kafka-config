@@ -2,7 +2,7 @@
   hosts: zookeepers
   become: true
   tasks:
-    - name: Render updated zookeeper.properties
+    - name: Update zookeeper.properties
       template:
         src: ../templates/zookeeper.properties.j2
         dest: "{{ kafka_dir }}/config/zookeeper.properties"
@@ -10,7 +10,7 @@
         group: "{{ kafka_group }}"
         mode: '0644'
       notify: Restart ZooKeeper
-
+      
   handlers:
     - name: Restart ZooKeeper
       systemd:
