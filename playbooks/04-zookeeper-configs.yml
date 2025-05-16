@@ -29,11 +29,11 @@
     group: "{{ kafka_group }}"
     mode: '0644'
 
-- name: Deploy zookeeper.properties
-  template:
-    src: ../templates/zookeeper.properties.j2
-    dest: "{{ kafka_dir }}/config/zookeeper.properties"
-    owner: "{{ kafka_user }}"
-    group: "{{ kafka_group }}"
-    mode: '0644'
-    backup: yes
+# - name: Deploy zookeeper.properties
+#   template:
+#     src: ../templates/zookeeper.properties.j2
+#     dest: "{{ kafka_dir }}/config/zookeeper.properties"
+#     owner: "{{ kafka_user }}"
+#     group: "{{ kafka_group }}"
+#     mode: '0644'
+#     backup: yes
