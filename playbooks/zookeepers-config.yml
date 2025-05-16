@@ -1,0 +1,18 @@
+- name: Deploy and update ZooKeeper ensemble configs
+  hosts: zookeepers
+  become: true
+  tasks:
+    - name: Render updated zookeeper.properties
+      template:
+        src: ../templates/zookeeper.properties.j2
+        dest: "{{ kafka_dir }}/config/zookeeper.properties"
+        owner: "{{ kafka_user }}"
+        group: "{{ kafka_group }}"
+        mode: '0644'
+      notify: Restart ZooKeeper
+
+  handlers:
+    - name: Restart ZooKeeper
+      systemd:
+        name: zookeeper
+        state: restarted
