@@ -5,6 +5,7 @@
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
     mode: '0755'
+    recurse: yes
   loop:
     - "{{ zk_data_dir }}"
     - "{{ zk_log_dir }}"
