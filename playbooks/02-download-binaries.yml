@@ -1,4 +1,4 @@
-- name: Download and Install Kafka {{ kafka_version }} from Apache
+- name: Download Kafka {{ kafka_version }} from Apache
   get_url:
     url: "{{ kafka_url }}"
     dest: "/tmp/{{ kafka_archive }}"
