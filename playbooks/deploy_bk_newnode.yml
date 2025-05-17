@@ -1,35 +1,36 @@
 ---
-# 1. Prepare new ZooKeeper node (provision dirs, myid, service, etc.)
-- name: Setup new ZooKeeper node
-  hosts: zk_newnode
+# 1. Prepare new Kafka Broker (only new node)
+- name: Setup new Kafka Broker node
+  hosts: bk_newnode
   become: true
   roles:
-    # sets up data/log dirs, myid, enables/starts ZK service
-    - { role: zk_newnode, tags: ['zk_newnode'] }
+    # installs dependencies, downloads Kafka binaries, etc.
+    - { role: common, tags: ['common', 'bk_newnode'] }
+    - { role: bk_newnode, tags: ['bk_newnode'] }
 
 
-# 2. Update configs on ALL ZooKeeper nodes (ensemble)
-- name: Update ZooKeeper ensemble configs
-  hosts: zookeepers
+# 2. Update configs on all brokers (ensemble)
+- name: Update Kafka ensemble configs
+  hosts: brokers
   become: true
   roles:
-    # adds new node to all zookeeper.properties and /etc/hosts on all nodes
-    - { role: zk_ensemble, tags: ['zk_ensemble'] }
+    # adds new node to all server.properties and /etc/hosts on all nodes
+    - { role: bk_ensemble, tags: ['bk_ensemble'] }
 
 
-# 3. Rolling restart of the entire ensemble to pick up new member
-- name: Rolling restart ZooKeeper ensemble
-  hosts: zookeepers
+# 3. Rolling restart of brokers to pick up changes
+- name: Rolling restart Kafka Brokers
+  hosts: brokers
   become: true
   serial: 1         # runs tasks on one host at a time
   tasks:
-    - name: Restart ZooKeeper service (rolling)
+    - name: Restart Kafka Broker service (rolling)
       systemd:
-        name: zookeeper
+        name: kafka
         state: restarted
-    - name: Wait for ZooKeeper port 2181 to be available
+    - name: Wait for Kafka port 9092 to be available
       wait_for:
-        port: 2181
+        port: 9092
         delay: 3
         timeout: 30
 
@@ -55,3 +56,4 @@
 # > ansible-playbook playbooks/deploy_zk_node.yml
 #
 # ================================================================================
+

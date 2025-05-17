@@ -1,0 +1,8 @@
+---
+# 1. Prepare new ZooKeeper or Broker node
+- name: Setup new node
+  hosts: zk_newnode:bk_newnode
+  become: true
+  roles:
+    # installs dependencies, downloads Kafka binaries, etc.
+    - { role: common, tags: ['common', 'zk_newnode', 'bk_newnode'] }
