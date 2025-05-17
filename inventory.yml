@@ -1,15 +1,7 @@
 all:
   children:
-    brokers:
-      hosts:
-        kafka1:
-          ansible_host: 172.31.9.1
-        kafka2:
-          ansible_host: 172.31.19.230
-        kafka3:
-          ansible_host: 172.31.35.20
-        kafka4:
-          ansible_host: 172.31.48.10
+  
+    # ZOOKEEPER HOSTS
     zookeepers:
       hosts:
         zookeeper1:
@@ -20,7 +12,32 @@ all:
           ansible_host: 172.31.35.20
         zookeeper4:
           ansible_host: 172.31.48.10
+    zk_newnode:
+      hosts:
+        zookeeper4:
+          ansible_host: 172.31.48.10
+
+    # BROKER HOSTS
+    brokers:
+      hosts:
+        kafka1:
+          ansible_host: 172.31.9.1
+        kafka2:
+          ansible_host: 172.31.19.230
+        kafka3:
+          ansible_host: 172.31.35.20
+        kafka4:
+          ansible_host: 172.31.48.10
+    bk_newnode:
+      hosts:
+        kafka4:
+          ansible_host: 172.31.48.10
+
+    # TOOL HOSTS
     tools:
       hosts:
         webtools:
           ansible_host: 172.31.88.119
+
+  vars:
+    ansible_user: ubuntu
