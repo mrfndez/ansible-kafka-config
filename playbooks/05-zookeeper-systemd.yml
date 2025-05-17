@@ -9,6 +9,7 @@
   loop:
     - "{{ zk_data_dir }}"
     - "{{ zk_log_dir }}"
+    - "{{ jvm_log_dir }}"
 
 - name: Create systemd service for Zookeeper
   copy:
