@@ -39,29 +39,29 @@
 #########################################################
 ###            STEP #2 - DOWNLOAD BINARIES            ###
 #########################################################
-- name: Download Kafka {{ kafka_version }} from Apache
-  get_url:
-    url: "{{ kafka_url }}"
-    dest: "/tmp/{{ kafka_archive }}"
-    mode: '0644'
-    force: no
+# - name: Download Kafka {{ kafka_version }} from Apache
+#   get_url:
+#     url: "{{ kafka_url }}"
+#     dest: "/tmp/{{ kafka_archive }}"
+#     mode: '0644'
+#     force: no
 
-- name: Extract Kafka binaries to /opt/
-  unarchive:
-    src: "/tmp/{{ kafka_archive }}"
-    dest: "/opt/"
-    remote_src: yes
-    creates: "/opt/kafka_{{ scala_version }}-{{ kafka_version }}"
+# - name: Extract Kafka binaries to /opt/
+#   unarchive:
+#     src: "/tmp/{{ kafka_archive }}"
+#     dest: "/opt/"
+#     remote_src: yes
+#     creates: "/opt/kafka_{{ scala_version }}-{{ kafka_version }}"
 
-- name: Rename extracted Kafka folder to {{ kafka_dir }}
-  command: mv /opt/kafka_{{ scala_version }}-{{ kafka_version }} {{ kafka_dir }}
-  args:
-    creates: "{{ kafka_dir }}"
+# - name: Rename extracted Kafka folder to {{ kafka_dir }}
+#   command: mv /opt/kafka_{{ scala_version }}-{{ kafka_version }} {{ kafka_dir }}
+#   args:
+#     creates: "{{ kafka_dir }}"
 
-- name: Remove Kafka archive after extraction
-  file:
-    path: "/tmp/{{ kafka_archive }}"
-    state: absent
+# - name: Remove Kafka archive after extraction
+#   file:
+#     path: "/tmp/{{ kafka_archive }}"
+#     state: absent
 
 
 #########################################################
