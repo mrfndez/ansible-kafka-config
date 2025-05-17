@@ -1,0 +1,6 @@
+---
+- name: Deploy ZooKeeper ensemble
+  hosts: zookeepers
+  become: true
+  roles:
+    - zookeeper
