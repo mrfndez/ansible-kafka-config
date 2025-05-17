@@ -1,0 +1,9 @@
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Restart Broker
+  systemd:
+    name: broker
+    state: restarted
+    enabled: yes

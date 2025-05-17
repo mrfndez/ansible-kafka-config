@@ -1,0 +1,7 @@
+#########################################################
+###           STEP #1 - INSTALL DEPENDENCIES          ###
+#########################################################
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
