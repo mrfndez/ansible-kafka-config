@@ -1,0 +1,55 @@
+---
+# 1. Prepare new ZooKeeper node (provision dirs, myid, service, etc.)
+- name: Setup new ZooKeeper node
+  hosts: zookeepers
+  become: true
+  roles:
+    # installs dependencies, downloads Kafka binaries, etc.
+    - { role: common, tags: ['common', 'newnode'] }
+    # sets up data/log dirs, myid, enables/starts ZK service
+    - { role: zk_newnode, tags: ['zk_newnode', 'newnode'] }
+
+
+# 2. Update configs on ALL ZooKeeper nodes (ensemble)
+- name: Update ZooKeeper ensemble configs
+  hosts: zookeepers
+  become: true
+  roles:
+    # adds new node to all zookeeper.properties and /etc/hosts on all nodes
+    - { role: zk_ensemble, tags: ['zk_ensemble', 'ensemble'] }
+
+
+# 3. Rolling restart of the entire ensemble to pick up new member
+- name: Rolling restart ZooKeeper ensemble
+  hosts: zookeepers
+  become: true
+  serial: 1         # runs tasks on one host at a time
+  tasks:
+    - name: Restart ZooKeeper service (rolling)
+      systemd:
+        name: zookeeper
+        state: restarted
+
+
+# ================================================================================
+# How to run the Playbook with Tags:
+#
+# - provision only the new node
+# > ansible-playbook playbooks/add_zk_node.yml --tags newnode
+#
+# - update only the configs across the ensemble
+# > ansible-playbook playbooks/add_zk_node.yml --tags ensemble
+#
+# - do just the rolling restart
+# > ansible-playbook playbooks/add_zk_node.yml --tags rolling_restart
+#
+# - do multiple sections (e.g., configs + restart)
+# > ansible-playbook playbooks/add_zk_node.yml --tags "ensemble,rolling_restart"
+#
+# - skip something
+# > ansible-playbook playbooks/add_zk_node.yml --skip-tags rolling_restart
+#
+# - if not tags, it'll do all steps in the play
+# > ansible-playbook playbooks/add_zk_node.yml
+#
+# ================================================================================

@@ -1,5 +1,5 @@
 #########################################################
-###           STEP #1 - INSTALL DEPENDENCIES          ###
+###               INSTALL DEPENDENCIES                ###
 #########################################################
 - name: Update apt cache
   apt:
@@ -37,7 +37,7 @@
 
 
 #########################################################
-###            STEP #2 - DOWNLOAD BINARIES            ###
+###                 DOWNLOAD BINARIES                 ###
 #########################################################
 - name: Download Kafka {{ kafka_version }} from Apache
   get_url:
@@ -63,19 +63,11 @@
     path: "/tmp/{{ kafka_archive }}"
     state: absent
 
-
-#########################################################
-###             STEP #3 - CONFIGURE HOSTS             ###
-#########################################################
-- name: Generate host/ip pairs from inventory to /etc/hosts
-  set_fact:
-    all_hosts_block: |
-      {% for host in groups['all'] %}
-      {{ hostvars[host].ansible_host }} {{ host }}
-      {% endfor %}
-
-- name: Inject Kafka host entries into /etc/hosts
-  blockinfile:
-    path: /etc/hosts
-    block: "{{ all_hosts_block }}"
-    marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
+- name: Create JVM log directory
+  file:
+    path: "{{ jvm_log_dir }}"
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0755'
+    recurse: yes
