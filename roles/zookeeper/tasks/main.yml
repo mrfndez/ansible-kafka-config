@@ -1,88 +1,5 @@
 #########################################################
-###           STEP #1 - INSTALL DEPENDENCIES          ###
-#########################################################
-- name: Update apt cache
-  apt:
-    update_cache: yes
-  when: ansible_os_family == "Debian"
-  
-- name: Ensure required OS packages are installed
-  apt:
-    name:
-      - wget
-      - ca-certificates
-      - zip
-      - net-tools
-      - vim
-      - nano
-      - tar
-      - netcat-traditional
-      - openjdk-21-jdk
-    state: present
-  when: ansible_os_family == "Debian"
-
-- name: Disable swap (set vm.swappiness=1)
-  sysctl:
-    name: vm.swappiness
-    value: '1'
-    state: present
-    sysctl_set: yes
-    reload: yes
-
-- name: Persist swappiness setting in /etc/sysctl.conf
-  lineinfile:
-    path: /etc/sysctl.conf
-    line: 'vm.swappiness=1'
-    state: present
-
-
-#########################################################
-###            STEP #2 - DOWNLOAD BINARIES            ###
-#########################################################
-# - name: Download Kafka {{ kafka_version }} from Apache
-#   get_url:
-#     url: "{{ kafka_url }}"
-#     dest: "/tmp/{{ kafka_archive }}"
-#     mode: '0644'
-#     force: no
-
-# - name: Extract Kafka binaries to /opt/
-#   unarchive:
-#     src: "/tmp/{{ kafka_archive }}"
-#     dest: "/opt/"
-#     remote_src: yes
-#     creates: "/opt/kafka_{{ scala_version }}-{{ kafka_version }}"
-
-# - name: Rename extracted Kafka folder to {{ kafka_dir }}
-#   command: mv /opt/kafka_{{ scala_version }}-{{ kafka_version }} {{ kafka_dir }}
-#   args:
-#     creates: "{{ kafka_dir }}"
-
-# - name: Remove Kafka archive after extraction
-#   file:
-#     path: "/tmp/{{ kafka_archive }}"
-#     state: absent
-
-
-#########################################################
-###             STEP #3 - CONFIGURE HOSTS             ###
-#########################################################
-- name: Generate host/ip pairs from inventory to /etc/hosts
-  set_fact:
-    all_hosts_block: |
-      {% for host in groups['all'] %}
-      {{ hostvars[host].ansible_host }} {{ host }}
-      {% endfor %}
-
-- name: Inject Kafka host entries into /etc/hosts
-  blockinfile:
-    path: /etc/hosts
-    block: "{{ all_hosts_block }}"
-    marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
-
-
-#########################################################
-###            STEP #4 - ZOOKEEPER CONFIGS            ###
+###            STEP #1 - ZOOKEEPER CONFIGS            ###
 #########################################################
 - name: Ensure ZooKeeper config directory exists
   file:
@@ -126,7 +43,7 @@
 
 
 #########################################################
-###           STEP #5 - ZOOKEEPER AS SERVICE          ###
+###           STEP #2 - ZOOKEEPER AS SERVICE          ###
 #########################################################
 - name: Create Zookeeper data and log directories
   file:
@@ -169,7 +86,7 @@
 
 
 #########################################################
-###             STEP #6 - ZOOKEEPER HEALTH            ###
+###             STEP #3 - ZOOKEEPER HEALTH            ###
 #########################################################
 - name: Wait for Zookeeper to be up
   wait_for:
