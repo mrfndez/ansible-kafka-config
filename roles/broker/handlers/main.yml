@@ -2,8 +2,8 @@
   systemd:
     daemon_reload: yes
 
-- name: Restart Broker
+- name: Restart Kafka Broker
   systemd:
-    name: broker
+    name: kafka
     state: restarted
     enabled: yes
