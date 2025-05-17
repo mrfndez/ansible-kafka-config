@@ -1,0 +1,16 @@
+---
+- name: Complete Zookeeper Deployment (on Kafka broker hosts)
+  hosts: zookeepers
+  become: true
+  tasks:
+    - import_tasks: 01-install-deps.yml
+    - import_tasks: 02-download-binaries.yml
+    - import_tasks: 03-configure-hosts.yml
+    - import_tasks: 04-zookeeper-configs.yml
+    - import_tasks: 05-zookeeper-systemd.yml
+    - import_tasks: 06-check-zookeeper-health.yml
+
+  handlers:
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
