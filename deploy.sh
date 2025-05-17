@@ -26,7 +26,7 @@ GIT_BRANCH="${GIT_BRANCH:-master}"
 
 # set variables
 TIMESTAMP=$(date '+%Y-%m-%d_%H-%M-%S')
-LOG_FILE="deploy_${PLAYBOOK_FILE%.yml}_$TIMESTAMP.log"
+LOG_FILE="../logs/deploy_${PLAYBOOK_FILE%.yml}_$TIMESTAMP.log"
 
 # pull changes from repo
 echo "Pulling latest updates from GitHub (branch: $GIT_BRANCH)..."
