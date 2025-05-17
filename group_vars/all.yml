@@ -15,5 +15,5 @@ broker_data_dir: "/data/kafka"
 
 ######## Zookeeper Specific ########
 zk_data_dir: "/data/zookeeper"
-zk_log_dir: "/var/zookeeper/log"
+zk_log_dir: "/var/zookeeper/logs"
 zk_port: 2181
