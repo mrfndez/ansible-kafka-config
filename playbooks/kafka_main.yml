@@ -1,9 +1,9 @@
 ---
-- name: Prepare hosts
-  hosts: zookeepers:brokers
-  become: true
-  roles:
-    - common
+# - name: Prepare hosts
+#   hosts: zookeepers:brokers
+#   become: true
+#   roles:
+#     - common
 
 - name: Deploy ZooKeeper
   hosts: zookeepers
