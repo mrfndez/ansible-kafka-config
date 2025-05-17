@@ -6,6 +6,8 @@ set -e
 usage() {
   echo "Usage: $0 <playbook-file.yml> [extra ansible args]"
   echo "Example: $0 deploy_zk_newnode.yml --limit zk_newnode"
+  echo "Example: $0 deploy_zk_newnode.yml --tags zk_newnode"
+  echo "Example: $0 deploy_zk_newnode.yml --limit zookeeper4"
   exit 1
 }
 
