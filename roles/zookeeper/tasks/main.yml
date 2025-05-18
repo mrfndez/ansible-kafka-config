@@ -9,15 +9,12 @@
 
 - name: Setup individual Zookeeper node (data & log directories, myid, run as a service)
   include_tasks: node_setup.yml
-  tags:
-    - node_setup
+  tags: node_setup
 
 - name: Update cluster-wide zookeepers config
   include_tasks: cluster_update.yml
-  tags:
-    - cluster_update
+  tags: cluster_update
 
 - name: Rolling restart, stop one node, start it, move to next
   include_tasks: rolling_restart.yml
-  tags:
-    - cluster_update
+  tags: cluster_update

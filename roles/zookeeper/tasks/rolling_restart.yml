@@ -11,7 +11,7 @@
     port: "{{ zk_port }}"
     host: 0.0.0.0
     state: drained
-    timeout: 120
+    timeout: 60
 
 - name: Ensure Zookeeper process is not running
   shell: "ss -lntp | grep :{{ zk_port }}"
