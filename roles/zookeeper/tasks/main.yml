@@ -17,7 +17,7 @@
   tags:
     - cluster_update
 
-- name: Rolling restart: stop one node, start it, move to next
+- name: Rolling restart, stop one node, start it, move to next
   include_tasks: rolling_restart.yml
   tags:
     - cluster_update
