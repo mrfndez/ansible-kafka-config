@@ -1,0 +1,24 @@
+#########################################################
+###                  ROLLING RESTART                  ###
+#########################################################
+- name: Stop Zookeeper on current node
+  service:
+    name: zookeeper
+    state: stopped
+
+- name: Wait for Zookeeper port {{ zk_port }} to be closed
+  wait_for:
+    port: {{ zk_port }}
+    state: drained
+    timeout: 30
+
+- name: Start Zookeeper on current node
+  service:
+    name: zookeeper
+    state: started
+
+- name: Wait for Zookeeper port {{ zk_port }} to be up
+  wait_for:
+    port: {{ zk_port }}
+    delay: 5
+    timeout: 30

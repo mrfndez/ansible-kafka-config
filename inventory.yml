@@ -12,7 +12,7 @@ all:
           ansible_host: 172.31.35.20
         zookeeper4:
           ansible_host: 172.31.48.10
-    zk_newnode:
+    zookeeper_newnode:
       hosts:
         zookeeper4:
           ansible_host: 172.31.48.10
@@ -28,7 +28,7 @@ all:
           ansible_host: 172.31.35.20
         kafka4:
           ansible_host: 172.31.48.10
-    bk_newnode:
+    broker_newnode:
       hosts:
         kafka4:
           ansible_host: 172.31.48.10

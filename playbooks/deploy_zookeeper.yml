@@ -1,0 +1,37 @@
+---
+# 1. Prepare new ZooKeeper node (provision dirs, myid, service, etc.)
+- name: Setup new ZooKeeper node
+  hosts: zookeeper_newnode
+  become: true
+  roles:
+    - role: zookeeper
+      tags: node_setup
+
+
+# 2. Update configs on ALL ZooKeeper cluster nodes
+- name: Update ZooKeeper ensemble configs
+  hosts: zookeepers
+  become: true
+  roles:
+    - role: zookeeper
+      tags: cluster_update
+
+# ================================================================================
+# How to run the Playbook with Tags:
+#
+# - provision only the new node
+# > ansible-playbook playbooks/deploy_zookeeper.yml --tags node_setup
+#
+# - update only the configs across the ensemble
+# > ansible-playbook playbooks/deploy_zookeeper.yml --tags cluster_update
+#
+# - do multiple sections (e.g., configs + restart)
+# > ansible-playbook playbooks/deploy_zookeeper.yml --tags "node_setup,cluster_update"
+#
+# - skip something
+# > ansible-playbook playbooks/deploy_zookeeper.yml --skip-tags node_setup
+#
+# - if not tags, it'll do all steps in the play
+# > ansible-playbook playbooks/deploy_zookeeper.yml
+#
+# ================================================================================

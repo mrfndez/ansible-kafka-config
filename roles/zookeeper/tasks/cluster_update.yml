@@ -1,0 +1,39 @@
+#########################################################
+###                  CONFIGURE HOSTS                  ###
+#########################################################
+- name: Generate host/ip pairs from inventory to /etc/hosts
+  set_fact:
+    all_hosts_block: |
+      {% for host in groups['all'] %}
+      {{ hostvars[host].ansible_host }} {{ host }}
+      {% endfor %}
+
+- name: Inject Kafka host entries into /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: "{{ all_hosts_block }}"
+    marker: "# {mark} ANSIBLE MANAGED KAFKA HOSTS"
+
+
+#########################################################
+###          UPDATE ALL ZOOKEEPER PROPERTIES          ###
+#########################################################
+- name: Deploy zookeeper.properties
+  template:
+    src: templates/zookeeper.properties.j2
+    dest: "{{ kafka_dir }}/config/zookeeper.properties"
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0644'
+    backup: yes
+
+
+#########################################################
+###          UPDATE ALL ZOOKEEPER PROPERTIES          ###
+#########################################################
+- name: Trigger rolling restart across cluster nodes
+  include_tasks: rolling_restart.yml
+  run_once: true
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['zookeepers'] }}"
+  when: "'update_nodes' in ansible_run_tags"

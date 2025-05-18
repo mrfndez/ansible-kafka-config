@@ -1,0 +1,1 @@
+# No handler needed for rolling restarts (where you need precise, one-at-a-time orchestration)

@@ -1,5 +1,5 @@
 #########################################################
-###           STEP #1 - ...          ###
+###                  BROKER CONFIGS                   ###
 #########################################################
 - name: Ensure Kafka config directory exists
   file:
@@ -7,25 +7,84 @@
     state: directory
     mode: '0755'
 
-- name: Set broker ID based on inventory
+- name: Ensure Kafka data directory exists
+  file:
+    path: "{{ broker_data_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Set broker.id by matching IP to brokers group
   set_fact:
-    broker_id: "{{ groups['brokers'].index(inventory_hostname) + 1 }}"
+    broker_id: >-
+      {{
+        (groups['brokers']
+          | map('extract', hostvars, ['ansible_host'])
+          | list)
+          .index(ansible_host) + 1
+      }}
+  when: ansible_host in (groups['brokers'] | map('extract', hostvars, ['ansible_host']) | list)
 
-- name: Stop Kafka service
-  service:
-    name: kafka
-    state: stopped
-
-- name: Deploy server.properties
+- name: Template Kafka server.properties
   template:
-    src: ../templates/server.properties.j2
+    src: "{{ playbook_dir }}/../templates/server.properties.j2"
     dest: "{{ kafka_dir }}/config/server.properties"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
     mode: '0644'
-    backup: yes
 
-- name: Start Kafka service
-  service:
-    name: kafka
+
+#########################################################
+###             KAFKA AS A SYSTEMD SERVICE            ###
+#########################################################
+- name: Create Kafka data directory
+  file:
+    path: "{{ kafka_log_dir }}"
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: '0755'
+    recurse: yes
+
+- name: Create systemd service for Kafka
+  copy:
+    dest: /etc/systemd/system/broker.service
+    content: |
+      [Unit]
+      Description=Apache Kafka Server
+      After=network.target
+
+      [Service]
+      Type=simple
+      User={{ kafka_user }}
+      ExecStart={{ kafka_dir }}/bin/kafka-server-start.sh {{ kafka_dir }}/config/server.properties
+      ExecStop={{ kafka_dir }}/bin/kafka-server-stop.sh
+      Restart=on-failure
+      RestartSec=5
+      LimitNOFILE=100000
+
+      [Install]
+      WantedBy=multi-user.target
+  notify: Reload systemd
+
+- name: Enable and start Kafka Broker
+  systemd:
+    name: broker
+    enabled: yes
     state: started
+
+
+#########################################################
+###                 CHECK KAFKA HEALTH                ###
+#########################################################
+- name: Wait for Kafka Broker to be up
+  wait_for:
+    port: "{{ broker_port | default(9092) }}"
+    state: started
+    delay: 2
+    timeout: 30
+
+- name: Health check - Kafka Broker port
+  shell: nc -zv localhost "{{ broker_port | default(9092) }}"
+  register: broker_port_check
+  failed_when: broker_port_check.rc != 0
+  changed_when: false

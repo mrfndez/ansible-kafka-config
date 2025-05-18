@@ -4,8 +4,8 @@
 broker.id={{ broker_id }}
 
 # Host advertised to clients
-advertised.listeners=PLAINTEXT://{{ ansible_host }}:9092
-listeners=PLAINTEXT://{{ inventory_hostname }}:9092
+advertised.listeners=PLAINTEXT://{{ ansible_host }}:{{ broker_port }}
+listeners=PLAINTEXT://{{ inventory_hostname }}:{{ broker_port }}
 host.name={{ inventory_hostname }}
 
 # Allow topic deletion via CLI/admin tools
@@ -48,7 +48,7 @@ log.retention.check.interval.ms=300000
 ############################# Zookeeper #############################
 
 # Zookeeper connection string (with chroot)
-zookeeper.connect={% for host in groups['zookeepers'] %}{{ host }}:2181{% if not loop.last %},{% endif %}{% endfor %}/kafka
+zookeeper.connect={% for host in groups['zookeepers'] %}{{ host }}:{{ zk_port }}{% if not loop.last %},{% endif %}{% endfor %}/kafka
 
 # Timeout for ZK connection
 zookeeper.connection.timeout.ms=6000

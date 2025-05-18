@@ -1,0 +1,1 @@
+# You should almost never use the role /vars/main.yml unless you want to make something truly unchangeable by users (rare).
