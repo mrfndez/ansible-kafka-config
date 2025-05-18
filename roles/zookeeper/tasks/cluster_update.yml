@@ -26,14 +26,3 @@
     group: "{{ kafka_group }}"
     mode: '0644'
     backup: yes
-
-
-#########################################################
-###          UPDATE ALL ZOOKEEPER PROPERTIES          ###
-#########################################################
-- name: Trigger rolling restart across cluster nodes
-  include_tasks: rolling_restart.yml
-  run_once: true
-  delegate_to: "{{ item }}"
-  loop: "{{ groups['zookeepers'] }}"
-  when: "'update_nodes' in ansible_run_tags"

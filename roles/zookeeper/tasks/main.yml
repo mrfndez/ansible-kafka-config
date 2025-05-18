@@ -12,7 +12,7 @@
   tags:
     - node_setup
 
-- name: Update cluster-wide zookeepers config and orchestrate rolling restart
+- name: Update cluster-wide zookeepers config
   include_tasks: cluster_update.yml
   tags:
     - cluster_update
