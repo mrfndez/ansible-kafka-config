@@ -8,7 +8,7 @@
 
 - name: Wait for Zookeeper port {{ zk_port }} to be closed
   wait_for:
-    port: {{ zk_port }}
+    port: "{{ zk_port | int }}"
     state: drained
     timeout: 30
 
@@ -19,6 +19,6 @@
 
 - name: Wait for Zookeeper port {{ zk_port }} to be up
   wait_for:
-    port: {{ zk_port }}
+    port: "{{ zk_port | int }}"
     delay: 5
     timeout: 30
