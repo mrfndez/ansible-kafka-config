@@ -6,19 +6,31 @@
     name: zookeeper
     state: stopped
 
-- name: Wait for Zookeeper port {{ zk_port }} to be closed
+- name: Wait for Zookeeper port to be closed
   wait_for:
-    port: "{{ zk_port | int }}"
+    port: "{{ zk_port }}"
+    host: 0.0.0.0
     state: drained
-    timeout: 30
+    timeout: 120
+
+- name: Ensure Zookeeper process is not running
+  shell: "ss -lntp | grep :{{ zk_port }}"
+  register: zk_proc_check
+  failed_when: zk_proc_check.rc == 0
+  ignore_errors: true
+
+- name: Pause to allow file locks to release
+  pause:
+    seconds: 5
 
 - name: Start Zookeeper on current node
   service:
     name: zookeeper
     state: started
 
-- name: Wait for Zookeeper port {{ zk_port }} to be up
+- name: Wait for Zookeeper port to be up
   wait_for:
-    port: "{{ zk_port | int }}"
+    port: "{{ zk_port }}"
+    host: 0.0.0.0
     delay: 5
-    timeout: 30
+    timeout: 60
