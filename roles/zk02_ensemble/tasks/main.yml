@@ -1,3 +1,4 @@
+---
 #########################################################
 ###                  CONFIGURE HOSTS                  ###
 #########################################################
@@ -26,3 +27,10 @@
     group: "{{ kafka_group }}"
     mode: '0644'
     backup: yes
+
+
+#########################################################
+###              INCLUDE ROLLING RESTART              ###
+#########################################################
+- name: Perform rolling restart of cluster ZooKeeper nodes
+  include_tasks: rolling_restart.yml
