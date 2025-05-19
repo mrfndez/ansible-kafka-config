@@ -84,7 +84,7 @@
     port: "{{ zk_port }}"
     state: started
     delay: 2
-    timeout: 30
+    timeout: 60
 
 - name: Health check - Zookeeper "ruok" 4lw
   shell: echo "ruok" | nc localhost "{{ zk_port }}"
