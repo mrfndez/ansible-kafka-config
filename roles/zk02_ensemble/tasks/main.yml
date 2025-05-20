@@ -21,7 +21,7 @@
 #########################################################
 - name: Deploy zookeeper.properties
   template:
-    src: templates/zookeeper.properties.j2
+    src: "{{ playbook_dir }}/../templates/zookeeper.properties.j2"
     dest: "{{ kafka_dir }}/config/zookeeper.properties"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
