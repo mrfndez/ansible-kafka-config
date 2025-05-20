@@ -13,3 +13,30 @@
   become: true
   roles:
     - role: zk02_ensemble
+
+
+# 3. Rolling restart with serial=1 to ensure one-by-one restart
+- name: Perform rolling restart of ZooKeeper nodes
+  hosts: zookeepers
+  become: true
+  serial: 1
+  tasks:
+    - name: Restart ZooKeeper node
+      systemd:
+        name: zookeeper
+        state: restarted
+
+    - name: Wait for ZooKeeper to be up after restart
+      wait_for:
+        port: "{{ zk_port }}"
+        state: started
+        delay: 5
+        timeout: 60
+
+    - name: Health check after restart - ZooKeeper "ruok" 4lw
+      shell: echo "ruok" | nc localhost "{{ zk_port }}"
+      register: ruok_out
+      failed_when: "'imok' not in ruok_out.stdout"
+      changed_when: false
+      retries: 3
+      delay: 5

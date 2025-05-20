@@ -1,4 +1,3 @@
----
 #########################################################
 ###                  CONFIGURE HOSTS                  ###
 #########################################################
@@ -21,11 +20,9 @@
 #########################################################
 - name: Deploy zookeeper.properties
   template:
-    src: templates/zookeeper.properties.j2
+    src: "{{ playbook_dir }}/../templates/zookeeper.properties.j2"
     dest: "{{ kafka_dir }}/config/zookeeper.properties"
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
     mode: '0644'
     backup: yes
-  # skip the node that was just configured
-  when: inventory_hostname not in groups['zookeeper_newnode']

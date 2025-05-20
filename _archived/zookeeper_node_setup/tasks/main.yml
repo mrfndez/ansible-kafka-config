@@ -1,4 +1,3 @@
----
 #########################################################
 ###                ZOOKEEPER CONFIGS                  ###
 #########################################################
@@ -32,15 +31,6 @@
     owner: "{{ kafka_user }}"
     group: "{{ kafka_group }}"
     mode: '0644'
-
-- name: Deploy initial zookeeper.properties for new node
-  template:
-    src: templates/zookeeper.properties.j2
-    dest: "{{ kafka_dir }}/config/zookeeper.properties"
-    owner: "{{ kafka_user }}"
-    group: "{{ kafka_group }}"
-    mode: '0644'
-    backup: yes
 
 
 #########################################################
@@ -78,8 +68,25 @@
       WantedBy=multi-user.target
   notify: Reload systemd
 
-- name: Enable ZooKeeper service (but don't start yet)
+- name: Enable and start Zookeeper
   systemd:
     name: zookeeper
     enabled: yes
-    daemon_reload: yes
+    state: started
+
+
+#########################################################
+###              CHECK ZOOKEEPER HEALTH               ###
+#########################################################
+- name: Wait for Zookeeper to be up
+  wait_for:
+    port: "{{ zk_port }}"
+    state: started
+    delay: 2
+    timeout: 30
+
+- name: Health check - Zookeeper "ruok" 4lw
+  shell: echo "ruok" | nc localhost "{{ zk_port }}"
+  register: ruok_out
+  failed_when: "'imok' not in ruok_out.stdout"
+  changed_when: false
