@@ -33,7 +33,7 @@ all:
         kafka4:
           ansible_host: 172.31.48.10
 
-    # TOOL HOSTS
+    # WEBTOOL HOSTS
     tools:
       hosts:
         webtools:

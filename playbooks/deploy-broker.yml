@@ -1,59 +1,16 @@
 ---
-# 1. Prepare new Kafka Broker (only new node)
-- name: Setup new Kafka Broker node
-  hosts: bk_newnode
+# 1. Prepare new broker node (provision dirs, service, etc.)
+- name: Setup new broker node
+  hosts: broker_newnode
   become: true
   roles:
-    # installs dependencies, downloads Kafka binaries, etc.
-    - { role: common, tags: ['common', 'bk_newnode'] }
-    - { role: bk_newnode, tags: ['bk_newnode'] }
+    - role: brk01_newnode
 
 
-# 2. Update configs on all brokers (ensemble)
-- name: Update Kafka ensemble configs
+# 2. Update configs on ALL broker cluster nodes
+- name: Update cluster-wide brokers config
   hosts: brokers
   become: true
   roles:
-    # adds new node to all server.properties and /etc/hosts on all nodes
-    - { role: bk_ensemble, tags: ['bk_ensemble'] }
-
-
-# 3. Rolling restart of brokers to pick up changes
-- name: Rolling restart Kafka Brokers
-  hosts: brokers
-  become: true
-  serial: 1         # runs tasks on one host at a time
-  tasks:
-    - name: Restart Kafka Broker service (rolling)
-      systemd:
-        name: kafka
-        state: restarted
-    - name: Wait for Kafka port 9092 to be available
-      wait_for:
-        port: 9092
-        delay: 3
-        timeout: 30
-
-# ================================================================================
-# How to run the Playbook with Tags:
-#
-# - provision only the new node
-# > ansible-playbook playbooks/deploy_zk_node.yml --tags zk_newnode
-#
-# - update only the configs across the ensemble
-# > ansible-playbook playbooks/deploy_zk_node.yml --tags zk_ensemble
-#
-# - do just the rolling restart
-# > ansible-playbook playbooks/deploy_zk_node.yml --tags rolling_restart
-#
-# - do multiple sections (e.g., configs + restart)
-# > ansible-playbook playbooks/deploy_zk_node.yml --tags "zk_ensemble,rolling_restart"
-#
-# - skip something
-# > ansible-playbook playbooks/deploy_zk_node.yml --skip-tags rolling_restart
-#
-# - if not tags, it'll do all steps in the play
-# > ansible-playbook playbooks/deploy_zk_node.yml
-#
-# ================================================================================
-
+    - role: brk02_ensemble
+  

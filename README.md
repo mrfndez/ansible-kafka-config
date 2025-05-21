@@ -44,13 +44,17 @@ The web-tools instance has read-only firewall rules to every broker plus inbound
 ## Quick start
 
 ```bash
-# 1. Clone & install deps
-git clone https://github.com/mrfndez/ansible-kafka-config.git
-cd ansible-kafka-config
-pip install -r requirements.txt   # ansible-core & boto3
+#1. Install Ansible
 
-# 2. Launch or update the whole stack
-./deploy.sh
+sudo apt update && sudo apt install -y ansible      # Debian/Ubuntu
+sudo yum install -y ansible                         # RHEL/CentOS
+
+# 2. Clone & install deps
+git clone https://github.com/mrfndez/ansible-kafka-config.git
+
+# 3. Launch or update the whole stack
+cd ansible-kafka-config
+./deploy.sh [playbook_name.yml]
 ```
 
 ---
@@ -64,14 +68,16 @@ pip install -r requirements.txt   # ansible-core & boto3
 │   ├── all.yml                 # cluster-wide defaults
 ├── inventory.yml               # EC2 hosts grouped as brokers / zookeepers (existing & new node), web_tools
 ├── playbooks/
-│   ├── install-kafka.yml       # fetch & downloads binaries
-│   ├── deploy-zookeeper.yml    # deploy zookeeker node
-│   ├── deploy-broker.yml       # deploy broker node
+│   ├── install-kafka.yml       # downloads Kafka binaries
+│   ├── deploy-zookeeper.yml    # deploys zookeeker node
+│   ├── deploy-broker.yml       # deploys broker node
 │   └── smoke-test.yml          # end-to-end topic test
 ├── roles/
-│   ├── install_kafka/
-│   ├── zk01_newnode/
-│   └── zk02_ensemble/
+│   ├── install_kafka/          # step #1/1, called by install-kafka.yml
+│   ├── zkr01_newnode/          # step #1/2, called by deploy-zookeeper.yml
+│   └── zkr2_ensemble/          # step #2/2, called by deploy-zookeeper.yml
+│   ├── brk01_newnode/          # step #1/2, called by deploy-broker.yml
+│   └── brk02_ensemble/         # step #2/2, called by deploy-broker.yml
 ├── templates/                  # *.j2 files for server.properties, zookeeper.properties, systemd units, etc.
 ├── deploy.sh                   # helper wrapper around `ansible-playbook`
 └── ansible.cfg                 # SSH args, retries, callback plugins

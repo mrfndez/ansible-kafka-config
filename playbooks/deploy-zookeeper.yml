@@ -4,7 +4,7 @@
   hosts: zookeeper_newnode
   become: true
   roles:
-    - role: zk01_newnode
+    - role: zkr01_newnode
 
 
 # 2. Update configs on ALL ZooKeeper cluster nodes
@@ -12,7 +12,7 @@
   hosts: zookeepers
   become: true
   roles:
-    - role: zk02_ensemble
+    - role: zkr02_ensemble
 
 
 # 3. Rolling restart with serial=1 to ensure one-by-one restart
