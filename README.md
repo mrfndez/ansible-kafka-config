@@ -66,7 +66,9 @@ cd ansible-kafka-config
 ├── _archived/                  # legacy – NOT used any more
 ├── group_vars/
 │   ├── all.yml                 # cluster-wide defaults
+|
 ├── inventory.yml               # EC2 hosts grouped as brokers / zookeepers (existing & new node), web_tools
+|
 ├── playbooks/
 │   ├── install-kafka.yml       # downloads Kafka binaries
 │   ├── deploy-zookeeper.yml    # deploys zookeeker node
@@ -83,5 +85,8 @@ cd ansible-kafka-config
 │   └── brk02_ensemble/         # step #2/2, called by deploy-broker.yml
 |
 ├── templates/                  # *.j2 files for server.properties, zookeeper.properties, systemd units, etc.
+│   ├── server.properties.j2    # server.properties, contains the broker config
+│   └── zookeeper.properties.j2 # zookeeper.properties, contains the zookeeper config
+|
 ├── deploy.sh                   # helper wrapper around `ansible-playbook`
 └── ansible.cfg                 # SSH args, retries, callback plugins
