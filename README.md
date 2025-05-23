@@ -65,7 +65,7 @@ cd ansible-kafka-config
 .
 ├── _archived/                  # legacy – NOT used any more
 ├── group_vars/
-│   ├── all.yml                 # cluster-wide defaults
+│   └── all.yml                 # cluster-wide defaults
 |
 ├── inventory.yml               # EC2 hosts grouped as brokers / zookeepers (existing & new node), web_tools
 |
