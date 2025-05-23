@@ -72,12 +72,16 @@ cd ansible-kafka-config
 │   ├── deploy-zookeeper.yml    # deploys zookeeker node
 │   ├── deploy-broker.yml       # deploys broker node
 │   └── smoke-test.yml          # end-to-end topic test
+|
 ├── roles/
 │   ├── install_kafka/          # step #1/1, called by install-kafka.yml
+|
 │   ├── zkr01_newnode/          # step #1/2, called by deploy-zookeeper.yml
 │   └── zkr2_ensemble/          # step #2/2, called by deploy-zookeeper.yml
+|
 │   ├── brk01_newnode/          # step #1/2, called by deploy-broker.yml
 │   └── brk02_ensemble/         # step #2/2, called by deploy-broker.yml
+|
 ├── templates/                  # *.j2 files for server.properties, zookeeper.properties, systemd units, etc.
 ├── deploy.sh                   # helper wrapper around `ansible-playbook`
 └── ansible.cfg                 # SSH args, retries, callback plugins
