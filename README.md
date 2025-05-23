@@ -76,7 +76,7 @@ cd ansible-kafka-config
 │   └── smoke-test.yml          # end-to-end topic test
 |
 ├── roles/
-│   ├── install_kafka/          # step #1/1, called by install-kafka.yml
+│   └── install_kafka/          # step #1/1, called by install-kafka.yml
 |
 │   ├── zkr01_newnode/          # step #1/2, called by deploy-zookeeper.yml
 │   └── zkr2_ensemble/          # step #2/2, called by deploy-zookeeper.yml
